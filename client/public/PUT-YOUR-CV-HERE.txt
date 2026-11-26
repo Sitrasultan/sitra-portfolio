@@ -1,1 +1,68 @@
-Put your CV here and name it exactly: Sitra-Sultan-CV.pdf
+SITRA SULTAN | CURRICULUM VITAE Page 1
+SITRA SULTAN
+INFORMATION SCIENCE GRADUATE | MANAGEMENT INFORMATION SYSTEMS (MIS) | FULL-STACK
+DEVELOPMENT
+Addis Ababa, Ethiopia | Phone: [Add phone number] | Email: [Add professional email] | LinkedIn: [Add LinkedIn URL] | GitHub:
+github.com/Sitrasultan
+PROFESSIONAL SUMMARY
+Information Science graduate from Jimma University with practical experience in web application development, Management
+Information Systems (MIS), database-driven systems, and collaborative software projects. Familiar with translating user and
+system requirements into application features, integrating frontend interfaces with backend APIs, managing structured and
+NoSQL data, and troubleshooting software issues. Technical experience includes React, JavaScript, Node.js, Express.js, PHP,
+Laravel, Python, MySQL, and MongoDB. Brings analytical thinking, teamwork, and a user-focused approach to information
+systems development and IT operations.
+CORE COMPETENCIES
+Management Information Systems (MIS) • Information Systems Development • Systems Analysis and Requirements Gathering
+• Database Management • Web Application Development • API Integration • User Authentication and Access Control •
+Software Testing and Debugging • IT Troubleshooting • Technical Documentation • Team Collaboration
+PROFESSIONAL EXPERIENCE
+ICT Intern | Jimma University ICT Office
+Jimma, Ethiopia | [Add internship start month/year – end month/year]
+• Collaborated with a four-member development team on a university reservation information system.
+• Contributed to frontend development and integration with backend application services.
+• Worked with Laravel, PHP, React, and MySQL in developing and supporting application functionality.
+• Contributed to user authentication and role-based access control (RBAC) features.
+• Used Git and GitHub for source-code version control and collaboration with other developers.
+• Participated in debugging, testing, and resolving application issues.
+SELECTED PROJECT EXPERIENCE
+Guzoye – Travel Discovery and Booking Platform | Full-Stack Web Application
+• Contributed to a platform connecting travelers with locally led tourism experiences across Ethiopia, with traveler, guide, and
+administrator workspaces.
+• Worked on tour discovery, destination information, booking-related workflows, guide management, and database-backed
+features.
+Technologies: React, JavaScript, Node.js, Express.js, MongoDB, REST APIs
+ComputeX – Cloud-Based Student Computer Access Platform | Frontend Development
+• Developed React frontend components for a platform designed to provide students with on-demand access to remote
+computing resources.
+• Integrated frontend interfaces with existing Laravel backend APIs and worked on host and computing-session interfaces.
+Technologies: React, Laravel, PHP, Python, MySQL, Docker, WebRTC, noVNC
+SplitEase – Expense Sharing Platform | Full-Stack Web Application
+• Worked on a collaborative expense-sharing application with features for authentication, group management, expense splitting,
+and settlements.
+Technologies: React, Node.js, Express.js, MongoDB
+Roomify – Interactive Room Design and Rental Platform | Web Application
+• Contributed to frontend functionality and responsive user experiences for a room and property-related web application.
+Technologies: React, JavaScript
+TECHNICAL SKILLS
+Programming: JavaScript, PHP, Python, HTML5, CSS3
+Frontend: React.js, Vite, Responsive Web Design
+SITRA SULTAN | CURRICULUM VITAE Page 2
+Backend: Node.js, Express.js, Laravel, Flask
+Databases: MySQL, MongoDB, Database Design and CRUD Operations
+MIS / Systems: Systems Analysis, Requirements Gathering, Information Management, Data Processing
+APIs / Security: REST APIs, JWT Authentication, Role-Based Access Control
+IT / Networking: Networking Fundamentals, TCP/IP, DNS, DHCP, Hardware and Software Troubleshooting
+Tools / Platforms: Git, GitHub, Postman, VS Code, Docker, Windows, Linux
+EDUCATION
+Bachelor of Science in Information Science
+Jimma University, Ethiopia | Graduated: 2026
+CERTIFICATIONS AND PROFESSIONAL TRAINING
+• Software Engineering – Walmart USA
+• MERN Stack Development – SkillBridge
+• Cisco Networking Training
+PROFESSIONAL STRENGTHS
+Analytical Thinking • Problem-Solving • Communication • Teamwork • Adaptability • Time Management • Technical
+Documentation • Continuous Learning
+LANGUAGES
+English • Amharic • Afaan Oromo • Arabic
+References: Available upon request.

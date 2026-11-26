@@ -1,0 +1,21 @@
+import {useEffect,useState} from 'react';import {api,upload} from './api.js';
+const T={projects:['title','summary','details','category','status','tags','liveUrl','githubUrl','imageUrl','color','order'],certificates:['title','issuer','year','url','imageUrl'],skills:['name','level']};
+const O={category:['Full-stack','Laravel','UI','React'],status:['Built','In progress','Planned','Capstone']};
+function Manage({kind,token}){const [L,setL]=useState([]),[f,setF]=useState({}),[e,setE]=useState(''),[ok,setOk]=useState('');const load=()=>api('/'+kind).then(setL).catch(x=>setE(x.message));useEffect(()=>{setF({});setE('');setOk('');load()},[kind]);
+ const set=(k,v)=>setF(o=>({...o,[k]:v}));
+ const save=async ev=>{ev.preventDefault();const b={};T[kind].forEach(k=>{if(f[k]!==undefined&&f[k]!=='')b[k]=f[k]});if(typeof b.tags==='string')b.tags=b.tags.split(',').map(s=>s.trim()).filter(Boolean);['order','level'].forEach(k=>{if(b[k]!==undefined)b[k]=+b[k]});
+  try{await api('/'+kind+(f._id?'/'+f._id:''),{method:f._id?'PUT':'POST',body:b},token);setOk(f._id?'Saved changes.':'Added.');setE('');setF({});load()}catch(x){setE(x.message);setOk('')}};
+ const pick=async file=>{if(!file)return;try{set('imageUrl',await upload(file,token));setE('')}catch(x){setE(x.message)}};
+ const del=async id=>{if(confirm('Delete this item?')){await api('/'+kind+'/'+id,{method:'DELETE'},token);load()}};
+ return <><form onSubmit={save}>{f._id&&<b>Editing: {f.title||f.name}</b>}{T[kind].map(k=>O[k]?<select key={k} aria-label={k} value={f[k]||O[k][0]} onChange={x=>set(k,x.target.value)}>{O[k].map(o=><option key={o}>{o}</option>)}</select>:(k==='summary'||k==='details')?<textarea key={k} placeholder={k} value={f[k]||''} onChange={x=>set(k,x.target.value)}/>:<input key={k} placeholder={k==='tags'?'tags (comma separated)':k==='imageUrl'?'image link (or upload below)':k} value={f[k]||''} onChange={x=>set(k,x.target.value)}/>)}
+ {T[kind].includes('imageUrl')&&<label>Upload image (max 5 MB) <input type="file" accept="image/*" onChange={x=>pick(x.target.files[0])}/></label>}
+ <button className="btn p" type="submit">{f._id?'Save changes':'Add'}</button>{f._id&&<button type="button" className="x" onClick={()=>setF({})}>Cancel edit</button>}{e&&<span className="err">{e}</span>}{ok&&<span className="ok">{ok}</span>}</form>
+ {L.map(i=><div className="row" key={i._id}><span><b>{i.title||i.name}</b> {i.category||i.issuer||i.level||''} {i.imageUrl?'· image ✓':''}</span><span><button className="x" onClick={()=>{setF({...i,tags:i.tags?.join(', ')});scrollTo(0,0)}}>Edit</button><button className="x" onClick={()=>del(i._id)}>Delete</button></span></div>)}</>}
+function Inbox({token}){const [L,setL]=useState([]);const load=()=>api('/messages',{},token).then(setL).catch(()=>{});useEffect(()=>{load()},[]);
+ return L.length?L.map(m=><div className="row" key={m._id}><span><b>{m.name}</b> ({m.email})<br/>{m.message}</span><button className="x" onClick={async()=>{await api('/messages/'+m._id,{method:'DELETE'},token);load()}}>Delete</button></div>):<p>No messages yet.</p>}
+export default function Admin(){const [t,setT]=useState(localStorage.getItem('tok')||''),[pw,setPw]=useState(''),[err,setErr]=useState(''),[tab,setTab]=useState('projects');
+ const login=async e=>{e.preventDefault();try{const r=await api('/login',{method:'POST',body:{password:pw}});localStorage.setItem('tok',r.token);setT(r.token);setErr('')}catch(x){setErr(x.message)}};
+ if(!t)return <div className="adm w"><h1>Admin login</h1><form onSubmit={login}><input type="password" placeholder="Password" aria-label="Password" value={pw} onChange={e=>setPw(e.target.value)}/><button className="btn p" type="submit">Log in</button>{err&&<span className="err">{err}</span>}</form></div>;
+ return <div className="adm w"><h1>Admin</h1><p>Attach each project’s live link, GitHub link and screenshot here. <a href="#">View site</a> · <button className="x" onClick={()=>{localStorage.removeItem('tok');setT('')}}>Log out</button></p>
+ <div className="tabs">{['projects','certificates','skills','messages'].map(k=><button key={k} className={tab===k?'on':''} onClick={()=>setTab(k)}>{k}</button>)}</div>
+ {tab==='messages'?<Inbox token={t}/>:<Manage kind={tab} token={t}/>}</div>}

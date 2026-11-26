@@ -10,6 +10,136 @@ if(Math.hypot(p.x-m.x,p.y-m.y)<160){x.globalAlpha=.6;x.strokeStyle=s;x.beginPath
 return()=>{cancelAnimationFrame(id);removeEventListener('resize',rs)}},[]);return <canvas id="sky" ref={ref} aria-hidden="true"/>};
 const Role=()=>{const L=['MERN stack developer','MIS professional','Prompt engineer'],[t,setT]=useState('');useEffect(()=>{let i=0,c=0,d=false,k;const f=()=>{const w=L[i];c+=d?-1:1;setT(w.slice(0,c));let ms=d?35:70;if(!d&&c===w.length){d=true;ms=1400}else if(d&&c===0){d=false;i=(i+1)%L.length;ms=300}k=setTimeout(f,ms)};f();return()=>clearTimeout(k)},[]);return <div className="role">{t}</div>};
 const Shot=({p})=>{const [bad,setBad]=useState(false);const src=p.imageUrl?img(p.imageUrl):p.liveUrl?'https://image.thum.io/get/width/900/crop/600/'+p.liveUrl:'';return src&&!bad?<img className="shot" src={src} alt={p.title+' home page'} loading="lazy" onError={()=>setBad(true)}/>:<div className="shot ph"><span>🖼️ Add a screenshot</span></div>};
+
+
+
+const Gallery = ({ p }) => {
+  const images = [
+    ...new Set([
+      ...(p.imageUrl ? [p.imageUrl] : []),
+      ...(p.screenshots || [])
+    ])
+  ];
+
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    setActive(0);
+  }, [p._id]);
+
+  const next = () => {
+    setActive(current =>
+      current >= images.length - 1 ? 0 : current + 1
+    );
+  };
+
+  const prev = () => {
+    setActive(current =>
+      current <= 0 ? images.length - 1 : current - 1
+    );
+  };
+
+  if (!images.length) {
+    return (
+      <div className="project-gallery-empty">
+        No screenshots uploaded yet.
+      </div>
+    );
+  }
+
+  return (
+    <div className="project-gallery">
+
+      <div className="gallery-main">
+        <img
+          key={images[active]}
+          src={img(images[active])}
+          alt={`${p.title} screenshot ${active + 1}`}
+          onError={e => {
+            e.currentTarget.style.visibility = "hidden";
+          }}
+        />
+
+        {images.length > 1 && (
+          <>
+            <button
+              type="button"
+              className="gallery-arrow left"
+              onClick={prev}
+              aria-label="Previous screenshot"
+            >
+              &#10094;
+            </button>
+
+            <button
+              type="button"
+              className="gallery-arrow right"
+              onClick={next}
+              aria-label="Next screenshot"
+            >
+              &#10095;
+            </button>
+
+            <span className="gallery-count">
+              {active + 1} / {images.length}
+            </span>
+          </>
+        )}
+      </div>
+
+      {images.length > 1 && (
+        <>
+          <div className="gallery-pagination">
+            {images.map((url, index) => (
+              <button
+                key={url + index}
+                type="button"
+                className={active === index ? "active" : ""}
+                onClick={() => setActive(index)}
+                aria-label={`Go to screenshot ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          <div className="gallery-thumbnails">
+            {images.map((url, index) => (
+              <button
+                key={url + index}
+                type="button"
+                className={active === index ? "selected" : ""}
+                onClick={() => setActive(index)}
+              >
+                <img src={img(url)} alt={`Screenshot ${index + 1}`} />
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+
+    </div>
+  );
+};
+
+
+const ProjectDescription = ({ text }) => {
+  const paragraphs = (text || '')
+    .split('\n')
+    .map(line => line.trim())
+    .filter(Boolean);
+
+  return (
+    <div className="project-description">
+      <span className="description-label">ABOUT THIS PROJECT</span>
+      {paragraphs.length ? (
+        paragraphs.map((paragraph, index) => (
+          <p key={index}>{paragraph}</p>
+        ))
+      ) : (
+        <p>No project description available yet.</p>
+      )}
+    </div>
+  );
+};
 const Links=({p})=><div className="btns">{p.liveUrl&&<a className="btn p" href={p.liveUrl} target="_blank" rel="noreferrer">Live demo ↗</a>}{p.githubUrl&&<a className="btn" href={p.githubUrl} target="_blank" rel="noreferrer">GitHub ↗</a>}{!p.liveUrl&&!p.githubUrl&&<span className="soon">Links coming soon</span>}</div>;
 const SOCIAL=[['LinkedIn','https://www.linkedin.com/in/sitra-sultan-6a88a2353'],['GitHub','https://github.com/Sitrasultan'],['Instagram','https://instagram.com/si_sultan1140'],['Telegram','https://t.me/Rosewithblur']],EMAIL='sitrasultan1@gmail.com',CV_URL='/Sitra-Sultan-CV.pdf';
 const Footer=()=>{const [t,setT]=useState(''),[g,setG]=useState(0),[cp,setCp]=useState(false);
@@ -41,7 +171,7 @@ export default function App(){
  <section id="work" className="alt"><div className="w"><h2 className="t">Projects</h2><p className="sub">Real apps and interfaces I designed and built. Open any project to see its details, live demo and code.</p>
  <div className="tabs">{['All','Full-stack','Laravel','React','UI'].map(k=><button key={k} className={cat===k?'on':''} onClick={()=>setCat(k)}>{k}</button>)}</div>
  <div className="proj">{P.filter(p=>cat==='All'||p.category===cat).map(p=><div className="pc" key={p._id}><Shot p={p}/><div className="pb"><h3>{p.title}<span className={'st'+(['Planned','In progress'].includes(p.status)?' w2':'')}>{p.status}</span></h3><p>{p.summary}</p><div className="tags">{p.tags?.map(t=><span key={t}>{t}</span>)}</div><button className="btn p view" onClick={()=>setSel(p)}>View details</button></div></div>)}</div></div></section>
- {sel&&<div className="modal" onClick={()=>setSel(null)}><div className="mbox" role="dialog" aria-label={sel.title} onClick={e=>e.stopPropagation()}><Shot p={sel}/><div className="pb"><button className="x" onClick={()=>setSel(null)}>Close ✕</button><h3>{sel.title}<span className="st">{sel.status}</span></h3><p style={{whiteSpace:'pre-line'}}>{sel.details||sel.summary}</p><div className="tags">{sel.tags?.map(t=><span key={t}>{t}</span>)}</div><Links p={sel}/></div></div></div>}
+ {sel&&<div className="modal" onClick={()=>setSel(null)}><div className="mbox" role="dialog" aria-label={sel.title} onClick={e=>e.stopPropagation()}><Gallery p={sel}/><div className="pb"><button className="x" onClick={()=>setSel(null)}>Close ✕</button><h3>{sel.title}<span className="st">{sel.status}</span></h3> <ProjectDescription text={sel.details || sel.summary} /><div className="tags">{sel.tags?.map(t=><span key={t}>{t}</span>)}</div><Links p={sel}/></div></div></div>}
  <section id="certs"><div className="w"><h2 className="t">Certificates</h2><p className="sub">Add yours in the admin panel.</p><div className="grid">{C.length?C.map(c=><R c="cert" key={c._id}><h3>{c.title}</h3><p>{c.issuer}{c.year&&', '+c.year}</p>{c.url&&<p><a href={c.url} target="_blank" rel="noreferrer">Verify</a></p>}</R>):<R c="cert"><h3>BSc Information Science</h3><p>Jimma University</p></R>}</div></div></section>
  <section id="habits" className="alt"><div className="w"><h2 className="t">How I work</h2><p className="sub">Habits that keep my projects moving.</p><div className="hab">{HABITS.map(([t,p,d])=><R c="card" key={t}><div className="ring" style={{'--p':p}}><b>{p}%</b></div><h3>{t}</h3><p>{d}</p></R>)}</div></div></section>
  <section id="path"><div className="w"><h2 className="t">Journey</h2><div className="tl">{PATH.map(([s,t,d])=><R key={t}><small>{s}</small><h3>{t}</h3><p>{d}</p></R>)}</div></div></section>
